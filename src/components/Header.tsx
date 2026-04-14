@@ -65,16 +65,26 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => scrollTo(e, link.href)}
-              className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-4 py-2 rounded-md hover:bg-white/5 transition-all duration-200"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.href.startsWith("/") ? (
+              <a
+                key={link.href}
+                href={link.href}
+                className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-4 py-2 rounded-md hover:bg-white/5 transition-all duration-200"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => scrollTo(e, link.href)}
+                className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-4 py-2 rounded-md hover:bg-white/5 transition-all duration-200"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <a
             href="#cotizar"
             onClick={(e) => scrollTo(e, "#cotizar")}
@@ -127,19 +137,32 @@ export default function Header() {
             className="lg:hidden overflow-hidden bg-darker/95 backdrop-blur-xl border-t border-border"
           >
             <div className="px-6 py-8 flex flex-col gap-1">
-              {NAV_LINKS.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => scrollTo(e, link.href)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                  className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white py-3 px-4 rounded-lg hover:bg-white/5 transition-all"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {NAV_LINKS.map((link, i) =>
+                link.href.startsWith("/") ? (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white py-3 px-4 rounded-lg hover:bg-white/5 transition-all"
+                  >
+                    {link.label}
+                  </motion.a>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => scrollTo(e, link.href)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white py-3 px-4 rounded-lg hover:bg-white/5 transition-all"
+                  >
+                    {link.label}
+                  </motion.a>
+                )
+              )}
               <motion.a
                 href="#cotizar"
                 onClick={(e) => scrollTo(e, "#cotizar")}
