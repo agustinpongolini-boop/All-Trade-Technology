@@ -32,7 +32,6 @@ function CountUp({
     const timer = setInterval(() => {
       current++;
       const progress = current / steps;
-      // ease-out curve
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(eased * target));
 
@@ -58,12 +57,25 @@ export default function Stats() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="bg-dark border-y border-border">
-      <div ref={ref} className="max-w-6xl mx-auto px-6 py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4">
+    <section className="relative bg-dark overflow-hidden">
+      {/* Ambient orb */}
+      <div
+        aria-hidden
+        className="orb orb-accent-soft animate-orb-a"
+        style={{
+          width: 720,
+          height: 360,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          opacity: 0.7,
+        }}
+      />
+
+      <div ref={ref} className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
           {STATS.map((stat, i) => {
             const { num, suffix } = parseStatValue(stat.value);
-            const isLast = i === STATS.length - 1;
 
             return (
               <motion.div
@@ -71,17 +83,23 @@ export default function Stats() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`text-center py-6 md:py-0 ${
-                  !isLast ? "md:border-r md:border-border" : ""
-                }`}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="glass-card !rounded-2xl"
               >
-                <p className="font-heading font-extrabold text-4xl sm:text-5xl md:text-[3.2rem] text-accent leading-none">
-                  <CountUp target={num} suffix={suffix} started={inView} />
-                </p>
-                <p className="mt-3 font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/60">
-                  {stat.label}
-                </p>
+                <div className="relative px-5 py-6 md:px-6 md:py-7 text-center">
+                  <p
+                    className="font-heading font-extrabold text-4xl sm:text-5xl md:text-[3rem] leading-none bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(180deg, #FF8B54 0%, #FF6B2B 100%)",
+                    }}
+                  >
+                    <CountUp target={num} suffix={suffix} started={inView} />
+                  </p>
+                  <p className="mt-3 font-heading text-[10px] md:text-[11px] font-medium uppercase tracking-[0.15em] text-body/60">
+                    {stat.label}
+                  </p>
+                </div>
               </motion.div>
             );
           })}

@@ -19,6 +19,13 @@ export const STATS = [
 
 export const SERVICES = [
   {
+    id: "courier",
+    title: "Servicio Courier",
+    description:
+      "Importá productos chicos, muestras o repuestos puerta a puerta. Sin trámites pesados, sin volumen mínimo. Ideal si nunca importaste y querés empezar tranquilo.",
+    features: ["Sin volumen mínimo", "Puerta a puerta", "Ideal primera importación"],
+  },
+  {
     id: "comex",
     title: "Departamento de Comex Externo",
     description:

@@ -72,16 +72,27 @@ const CASES = [
   },
 ] as const;
 
-const TAG_STYLES: Record<string, string> = {
-  Exportación: "bg-accent/15 text-accent",
-  Importación: "bg-[#94a3b8]/15 text-[#94a3b8]",
-  Logística: "bg-[#6ee7b7]/15 text-[#6ee7b7]",
+const TAG_STYLES: Record<string, { bg: string; border: string; text: string }> = {
+  Exportación: {
+    bg: "rgba(255,107,43,0.14)",
+    border: "rgba(255,107,43,0.32)",
+    text: "#FF8B54",
+  },
+  Importación: {
+    bg: "rgba(148,163,184,0.14)",
+    border: "rgba(148,163,184,0.30)",
+    text: "#94a3b8",
+  },
+  Logística: {
+    bg: "rgba(110,231,183,0.14)",
+    border: "rgba(110,231,183,0.30)",
+    text: "#6ee7b7",
+  },
 };
 
-// Card width + gap in pixels (matches Tailwind classes below)
 const CARD_W = 340;
 const GAP = 24;
-const SPEED = 0.5; // px per frame (~30px/s at 60fps)
+const SPEED = 0.5;
 
 export default function CaseStudies() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -89,13 +100,11 @@ export default function CaseStudies() {
   const offsetRef = useRef(0);
   const rafRef = useRef<number>(0);
 
-  // Total width of one full set
   const setWidth = CASES.length * (CARD_W + GAP);
 
   const tick = useCallback(() => {
     if (!paused) {
       offsetRef.current -= SPEED;
-      // Reset seamlessly when one full set has scrolled by
       if (Math.abs(offsetRef.current) >= setWidth) {
         offsetRef.current += setWidth;
       }
@@ -111,12 +120,18 @@ export default function CaseStudies() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [tick]);
 
-  // We render 3 copies of the set so the track is always visually full
   const items = [...CASES, ...CASES, ...CASES];
 
   return (
-    <section id="casos" className="bg-dark py-24 md:py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="casos" className="relative bg-dark py-24 md:py-32 overflow-hidden">
+      {/* Ambient orb */}
+      <div
+        aria-hidden
+        className="orb orb-accent-soft animate-orb-a"
+        style={{ width: 640, height: 320, top: "30%", left: "50%", transform: "translate(-50%, -50%)", opacity: 0.5 }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -130,7 +145,15 @@ export default function CaseStudies() {
           </span>
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-[2.8rem] text-white leading-tight">
             Operaciones reales.{" "}
-            <span className="text-accent">Resultados concretos.</span>
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #FF8B54 0%, #FF6B2B 55%, #FF8B54 100%)",
+              }}
+            >
+              Resultados concretos.
+            </span>
           </h2>
         </motion.div>
       </div>
@@ -142,58 +165,69 @@ export default function CaseStudies() {
         onMouseLeave={() => setPaused(false)}
       >
         {/* Fade edges */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-dark to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-dark to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10 bg-gradient-to-r from-dark to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-dark to-transparent" />
 
         <div
           ref={trackRef}
           className="flex will-change-transform"
           style={{ gap: GAP }}
         >
-          {items.map((c, i) => (
-            <article
-              key={`${c.title}-${i}`}
-              className="group flex-shrink-0 bg-card border border-border rounded-2xl overflow-hidden hover:border-accent/40 transition-colors duration-300"
-              style={{ width: CARD_W }}
-            >
-              {/* Image */}
-              <div className="relative aspect-video bg-[#1a1a1a] overflow-hidden">
-                <Image
-                  src={c.image}
-                  alt={c.title}
-                  fill
-                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                  sizes="340px"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-              </div>
+          {items.map((c, i) => {
+            const tag = TAG_STYLES[c.tag];
+            return (
+              <article
+                key={`${c.title}-${i}`}
+                className="glass-card group flex-shrink-0 !rounded-2xl"
+                style={{ width: CARD_W }}
+              >
+                {/* Image */}
+                <div className="relative aspect-video bg-[#1a1a1a] overflow-hidden">
+                  <Image
+                    src={c.image}
+                    alt={c.title}
+                    fill
+                    className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                    sizes="340px"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/85 via-dark/20 to-transparent" />
+                </div>
 
-              {/* Content */}
-              <div className="p-5">
-                {/* Tag pill */}
-                <span
-                  className={`inline-block font-heading text-[10px] font-semibold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full mb-3 ${TAG_STYLES[c.tag] ?? ""}`}
-                >
-                  {c.tag}
-                </span>
+                {/* Content */}
+                <div className="relative p-5">
+                  {/* Tag glass chip */}
+                  <span
+                    className="inline-block font-heading text-[10px] font-semibold uppercase tracking-[0.12em] px-3 py-1 rounded-full mb-3"
+                    style={{
+                      backgroundColor: tag?.bg ?? "rgba(255,255,255,0.06)",
+                      border: `1px solid ${tag?.border ?? "rgba(255,255,255,0.10)"}`,
+                      color: tag?.text ?? "#fff",
+                      backdropFilter: "blur(8px) saturate(140%)",
+                      WebkitBackdropFilter: "blur(8px) saturate(140%)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10)",
+                    }}
+                  >
+                    {c.tag}
+                  </span>
 
-                <h3 className="font-heading font-bold text-[15px] text-white mb-1.5 leading-snug group-hover:text-accent transition-colors duration-300">
-                  {c.title}
-                </h3>
+                  <h3 className="font-heading font-bold text-[15px] text-white mb-1.5 leading-snug group-hover:text-accent-light transition-colors duration-300">
+                    {c.title}
+                  </h3>
 
-                {/* Route */}
-                <p className="flex items-center gap-1.5 font-body text-xs text-[#888] mb-3">
-                  <ArrowRight size={12} className="text-accent shrink-0" />
-                  {c.route}
-                </p>
+                  {/* Route */}
+                  <p className="flex items-center gap-1.5 font-body text-xs text-body/65 mb-3">
+                    <ArrowRight size={12} className="text-accent shrink-0" />
+                    {c.route}
+                  </p>
 
-                <p className="font-body text-xs text-[#666] leading-relaxed line-clamp-3">
-                  {c.description}
-                </p>
-              </div>
-            </article>
-          ))}
+                  <p className="font-body text-xs text-body/55 leading-relaxed line-clamp-3">
+                    {c.description}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

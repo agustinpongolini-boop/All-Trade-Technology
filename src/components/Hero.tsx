@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { COMPANY } from "@/lib/constants";
 
 const fadeUp = (delay: number) => ({
@@ -13,36 +13,47 @@ const fadeUp = (delay: number) => ({
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-dark overflow-hidden">
-      {/* ── Grid background ── */}
+      {/* ── Ambient orbs (light source behind the glass) ── */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        aria-hidden
+        className="orb orb-accent animate-orb-a"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,107,43,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,107,43,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
+          width: 720,
+          height: 720,
+          top: "-12%",
+          left: "-8%",
+        }}
+      />
+      <div
+        aria-hidden
+        className="orb orb-accent-soft animate-orb-b"
+        style={{
+          width: 620,
+          height: 620,
+          bottom: "-18%",
+          right: "-10%",
+        }}
+      />
+      <div
+        aria-hidden
+        className="orb orb-cool"
+        style={{
+          width: 540,
+          height: 540,
+          top: "30%",
+          right: "20%",
         }}
       />
 
-      {/* ── Ambient glow ── */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(255,107,43,0.05) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* ── Vignette edges ── */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-dark/60 via-transparent to-dark/60 pointer-events-none" />
+      {/* ── Subtle vignette to keep text readable ── */}
+      <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-transparent to-dark/80 pointer-events-none" />
 
       {/* ── Content ── */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center pt-24 pb-16">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center pt-28 pb-20">
         {/* Badge */}
-        <motion.div {...fadeUp(0)} className="mb-8 inline-block">
-          <span className="inline-block font-heading text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-accent border border-accent/30 rounded-full px-5 py-2 bg-accent/5">
+        <motion.div {...fadeUp(0)} className="mb-8 inline-flex">
+          <span className="glass-chip inline-flex items-center gap-2 px-5 py-2 font-heading text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-light">
+            <Sparkles size={12} className="opacity-80" />
             Primer operador híbrido del Cono Sur
           </span>
         </motion.div>
@@ -54,18 +65,26 @@ export default function Hero() {
         >
           Domina tu carga.
           <br />
-          <span className="text-accent">Protege tu capital.</span>
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #FF8B54 0%, #FF6B2B 55%, #FF8B54 100%)",
+            }}
+          >
+            Protege tu capital.
+          </span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           {...fadeUp(0.3)}
-          className="mt-7 font-body text-base sm:text-lg md:text-xl leading-relaxed text-[#999] max-w-2xl mx-auto"
+          className="mt-7 font-body text-base sm:text-lg md:text-xl leading-relaxed text-body/75 max-w-2xl mx-auto"
         >
           {COMPANY.subtitle}
         </motion.p>
 
-        {/* Buttons */}
+        {/* Two doors */}
         <motion.div
           {...fadeUp(0.45)}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
@@ -76,7 +95,7 @@ export default function Hero() {
               e.preventDefault();
               document.querySelector("#cotizar")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="group bg-accent hover:bg-accent-light text-white font-heading text-sm font-semibold uppercase tracking-wider px-8 py-4 rounded-lg transition-colors duration-200 flex items-center gap-2.5 shadow-lg shadow-accent/20"
+            className="glass-btn-primary group font-heading text-sm font-semibold uppercase tracking-wider px-8 py-4 rounded-xl flex items-center gap-2.5"
           >
             Cotizar mi operación
             <ArrowRight
@@ -90,23 +109,29 @@ export default function Hero() {
               e.preventDefault();
               document.querySelector("#servicios")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="border border-accent/30 text-accent hover:bg-accent/5 hover:border-accent/50 font-heading text-sm font-semibold uppercase tracking-wider px-8 py-4 rounded-lg transition-all duration-200"
+            className="glass-btn-secondary group font-heading text-sm font-semibold uppercase tracking-wider px-8 py-4 rounded-xl flex items-center gap-2.5"
           >
-            Ver servicios
+            Es mi primera importación
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5 opacity-70"
+            />
           </a>
         </motion.div>
 
         {/* Pulse dot + availability */}
         <motion.div
           {...fadeUp(0.6)}
-          className="mt-12 flex items-center justify-center gap-2.5"
+          className="mt-12 flex items-center justify-center"
         >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
-          </span>
-          <span className="font-heading text-xs text-[#666] uppercase tracking-wider">
-            Respondemos cotizaciones en menos de 24 horas
+          <span className="glass-chip-neutral inline-flex items-center gap-2.5 px-4 py-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <span className="font-heading text-[10px] sm:text-xs text-body/70 uppercase tracking-wider">
+              Respondemos cotizaciones en menos de 24 horas
+            </span>
           </span>
         </motion.div>
       </div>

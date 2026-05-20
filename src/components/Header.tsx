@@ -13,6 +13,7 @@ export default function Header() {
     function onScroll() {
       setScrolled(window.scrollY > 40);
     }
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -20,7 +21,9 @@ export default function Header() {
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   const scrollTo = useCallback(
@@ -37,115 +40,130 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-dark/90 backdrop-blur-xl border-b border-border shadow-lg shadow-black/20"
-          : "bg-transparent border-b border-transparent"
+      className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-out ${
+        scrolled ? "top-3 sm:top-4" : "top-5 sm:top-6"
       }`}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-[72px]">
-        {/* Logo */}
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="flex items-center gap-3 group"
+      <div className="mx-auto max-w-6xl px-4">
+        <div
+          className={`glass-pill flex items-center justify-between gap-3 pl-3 pr-2 sm:pl-4 sm:pr-3 h-14 transition-all duration-500 ${
+            scrolled ? "saturate-150" : ""
+          }`}
         >
-          <div className="w-9 h-9 bg-accent rounded-md flex items-center justify-center">
-            <span className="font-heading font-extrabold text-sm text-white leading-none">
-              AT
+          {/* Logo */}
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-2.5 pl-1 group"
+          >
+            <div
+              className="relative w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(255,139,84,0.95) 0%, rgba(255,107,43,0.82) 100%)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.32), 0 6px 14px -4px rgba(255,107,43,0.45)",
+                border: "1px solid rgba(255,255,255,0.18)",
+              }}
+            >
+              <span className="font-heading font-extrabold text-[11px] text-white leading-none tracking-tight">
+                AT
+              </span>
+            </div>
+            <span className="font-heading font-semibold text-[10px] tracking-[0.22em] uppercase text-white/90 hidden sm:block">
+              All Trade Technology
             </span>
-          </div>
-          <span className="font-heading font-semibold text-xs tracking-[0.2em] uppercase text-white hidden sm:block">
-            All Trade Technology
-          </span>
-        </a>
+          </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {NAV_LINKS.map((link) =>
-            link.href.startsWith("/") ? (
-              <a
-                key={link.href}
-                href={link.href}
-                className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-4 py-2 rounded-md hover:bg-white/5 transition-all duration-200"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => scrollTo(e, link.href)}
-                className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-4 py-2 rounded-md hover:bg-white/5 transition-all duration-200"
-              >
-                {link.label}
-              </a>
-            )
-          )}
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {NAV_LINKS.map((link) =>
+              link.href.startsWith("/") ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-3.5 py-2 rounded-full hover:bg-white/[0.06] transition-all duration-200"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => scrollTo(e, link.href)}
+                  className="font-heading text-[11px] font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white px-3.5 py-2 rounded-full hover:bg-white/[0.06] transition-all duration-200"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
+          </nav>
+
+          {/* Desktop CTA */}
           <a
             href="#cotizar"
             onClick={(e) => scrollTo(e, "#cotizar")}
-            className="ml-4 bg-accent hover:bg-accent-light text-white font-heading text-[11px] font-semibold uppercase tracking-[0.15em] px-6 py-2.5 rounded-lg transition-colors duration-200"
+            className="glass-btn-primary hidden lg:inline-flex font-heading text-[11px] font-semibold uppercase tracking-[0.15em] px-5 py-2 rounded-full items-center"
           >
-            Cotizar operación
+            Cotizar
           </a>
-        </nav>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-body hover:text-white transition-colors"
-          aria-label="Toggle menu"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            {open ? (
-              <motion.span
-                key="close"
-                initial={{ opacity: 0, rotate: -90 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: 90 }}
-                transition={{ duration: 0.2 }}
-              >
-                <X size={22} />
-              </motion.span>
-            ) : (
-              <motion.span
-                key="menu"
-                initial={{ opacity: 0, rotate: 90 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: -90 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Menu size={22} />
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="lg:hidden relative w-10 h-10 flex items-center justify-center text-body/80 hover:text-white transition-colors rounded-full hover:bg-white/[0.06]"
+            aria-label="Toggle menu"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {open ? (
+                <motion.span
+                  key="close"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X size={20} />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ opacity: 0, rotate: 90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: -90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu size={20} />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </div>
       </div>
 
-      {/* Mobile nav */}
+      {/* Mobile nav sheet */}
       <AnimatePresence>
         {open && (
-          <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden overflow-hidden bg-darker/95 backdrop-blur-xl border-t border-border"
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="lg:hidden mx-auto max-w-6xl px-4 mt-3"
           >
-            <div className="px-6 py-8 flex flex-col gap-1">
+            <nav className="glass-card !rounded-2xl px-3 py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link, i) =>
                 link.href.startsWith("/") ? (
                   <motion.a
                     key={link.href}
                     href={link.href}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white py-3 px-4 rounded-lg hover:bg-white/5 transition-all"
+                    transition={{ duration: 0.25, delay: i * 0.04 }}
+                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/80 hover:text-white py-3 px-4 rounded-xl hover:bg-white/[0.06] transition-all"
                   >
                     {link.label}
                   </motion.a>
@@ -154,10 +172,10 @@ export default function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={(e) => scrollTo(e, link.href)}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/70 hover:text-white py-3 px-4 rounded-lg hover:bg-white/5 transition-all"
+                    transition={{ duration: 0.25, delay: i * 0.04 }}
+                    className="font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/80 hover:text-white py-3 px-4 rounded-xl hover:bg-white/[0.06] transition-all"
                   >
                     {link.label}
                   </motion.a>
@@ -166,15 +184,15 @@ export default function Header() {
               <motion.a
                 href="#cotizar"
                 onClick={(e) => scrollTo(e, "#cotizar")}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: NAV_LINKS.length * 0.05 }}
-                className="mt-4 bg-accent hover:bg-accent-light text-white text-center font-heading text-sm font-semibold uppercase tracking-[0.15em] px-6 py-3.5 rounded-lg transition-colors"
+                transition={{ duration: 0.25, delay: NAV_LINKS.length * 0.04 }}
+                className="glass-btn-primary mt-3 text-center font-heading text-sm font-semibold uppercase tracking-[0.15em] px-6 py-3.5 rounded-xl"
               >
                 Cotizar operación
               </motion.a>
-            </div>
-          </motion.nav>
+            </nav>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
