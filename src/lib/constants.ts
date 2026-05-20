@@ -1,17 +1,26 @@
-// Booking / consultation. Replace CONSULTATION.calendarUrl with your real
-// Cal.com or Calendly URL when configured. Until then it falls back to a
-// WhatsApp deep link with a tailored message — same UX of "talk to a human".
+// Booking / consultation.
+//
+// Cal.com popup embed. To activate, create a Cal.com event type (15 minutes)
+// and set CONSULTATION.calCom.handle to your Cal.com username (e.g.
+// "alltrade-comex") and eventSlug to the event's slug (default: "15min").
+// Until handle is set, the primary CTA falls back to a tailored WhatsApp link
+// so the UX never breaks.
 export const CONSULTATION = {
-  // TODO: replace with https://cal.com/<handle>/15min or Calendly equivalent.
-  calendarUrl:
-    "https://wa.me/5493492630909?text=" +
-    encodeURIComponent(
-      "Hola, quiero agendar 15 minutos para hablar de una importación. Es mi primera vez."
-    ),
+  calCom: {
+    // e.g. "alltrade-comex" — leave empty to fall back to WhatsApp.
+    handle: "",
+    eventSlug: "15min",
+  },
   whatsappFallback:
     "https://wa.me/5493492630909?text=" +
     encodeURIComponent(
       "Hola, quiero hablar 15 minutos por WhatsApp sobre una importación."
+    ),
+  // Used as the primary CTA href only when Cal.com handle is unset.
+  whatsappBooking:
+    "https://wa.me/5493492630909?text=" +
+    encodeURIComponent(
+      "Hola, quiero agendar 15 minutos para hablar de una importación. Es mi primera vez."
     ),
 } as const;
 
