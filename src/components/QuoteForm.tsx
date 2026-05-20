@@ -7,16 +7,21 @@ import { ArrowRight, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 type Status = "idle" | "loading" | "success" | "error";
 
 const INPUT_CLASS =
-  "w-full bg-darker border border-border rounded-lg px-4 py-3.5 text-white font-body text-sm placeholder:italic placeholder:text-[#555] focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all duration-200";
+  "w-full rounded-xl px-4 py-3.5 text-white font-body text-sm placeholder:italic placeholder:text-body/35 focus:outline-none transition-all duration-200";
+
+const INPUT_STYLE: React.CSSProperties = {
+  backgroundColor: "rgba(255,255,255,0.035)",
+  border: "1px solid rgba(255,255,255,0.10)",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+};
 
 const LABEL_CLASS =
-  "block font-heading text-[11px] font-semibold uppercase tracking-[0.15em] text-[#666] mb-2";
+  "block font-heading text-[11px] font-semibold uppercase tracking-[0.15em] text-body/55 mb-2";
 
 export default function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-reset to idle 5 seconds after success
   useEffect(() => {
     if (status === "success") {
       timerRef.current = setTimeout(() => setStatus("idle"), 5000);
@@ -49,8 +54,20 @@ export default function QuoteForm() {
   }
 
   return (
-    <section id="cotizar" className="bg-dark py-24 md:py-32">
-      <div className="max-w-3xl mx-auto px-6">
+    <section id="cotizar" className="relative bg-dark py-24 md:py-32 overflow-hidden">
+      {/* Ambient orbs */}
+      <div
+        aria-hidden
+        className="orb orb-accent-soft animate-orb-a"
+        style={{ width: 600, height: 600, top: "-10%", right: "-10%" }}
+      />
+      <div
+        aria-hidden
+        className="orb orb-cool"
+        style={{ width: 480, height: 480, bottom: "-5%", left: "-12%" }}
+      />
+
+      <div className="relative max-w-3xl mx-auto px-6">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -63,7 +80,16 @@ export default function QuoteForm() {
             Contacto
           </span>
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-[2.8rem] text-white leading-tight">
-            Cotizá tu operación gratis
+            Cotizá tu operación{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #FF8B54 0%, #FF6B2B 55%, #FF8B54 100%)",
+              }}
+            >
+              gratis
+            </span>
           </h2>
         </motion.div>
 
@@ -73,7 +99,7 @@ export default function QuoteForm() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" as const, delay: 0.1 }}
-          className="bg-card border border-border rounded-2xl p-7 md:p-10"
+          className="glass-card p-7 md:p-10"
         >
           <AnimatePresence mode="wait">
             {status === "success" ? (
@@ -85,13 +111,22 @@ export default function QuoteForm() {
                 transition={{ duration: 0.4 }}
                 className="py-16 flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mb-6">
-                  <CheckCircle size={32} className="text-green-400" />
+                <div
+                  className="relative w-16 h-16 rounded-full flex items-center justify-center mb-6"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(135deg, rgba(74,222,128,0.30) 0%, rgba(34,197,94,0.18) 100%)",
+                    border: "1px solid rgba(74,222,128,0.40)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 28px -8px rgba(34,197,94,0.4)",
+                  }}
+                >
+                  <CheckCircle size={28} className="text-green-300" />
                 </div>
                 <h3 className="font-heading font-bold text-2xl text-white mb-3">
                   ¡Recibimos tu consulta!
                 </h3>
-                <p className="font-body text-sm text-[#999] max-w-md">
+                <p className="font-body text-sm text-body/70 max-w-md">
                   Nuestro equipo va a analizar tu operación y te contactará en
                   menos de 24 horas con una propuesta detallada.
                 </p>
@@ -108,7 +143,7 @@ export default function QuoteForm() {
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onSubmit={handleSubmit}
-                className="space-y-5"
+                className="space-y-5 quote-form"
               >
                 {/* Row 1: Nombre + Empresa */}
                 <div className="grid md:grid-cols-2 gap-5">
@@ -121,6 +156,7 @@ export default function QuoteForm() {
                       name="name"
                       required
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="Juan Pérez"
                     />
                   </div>
@@ -133,6 +169,7 @@ export default function QuoteForm() {
                       name="company"
                       required
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="Nombre de tu empresa"
                     />
                   </div>
@@ -150,6 +187,7 @@ export default function QuoteForm() {
                       type="email"
                       required
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="juan@empresa.com"
                     />
                   </div>
@@ -161,6 +199,7 @@ export default function QuoteForm() {
                       id="phone"
                       name="phone"
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="+54 9 3492 ..."
                     />
                   </div>
@@ -177,6 +216,7 @@ export default function QuoteForm() {
                       name="product"
                       required
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="Ej: Maquinaria industrial, textiles..."
                     />
                   </div>
@@ -188,6 +228,7 @@ export default function QuoteForm() {
                       id="origin"
                       name="origin"
                       className={INPUT_CLASS}
+                      style={INPUT_STYLE}
                       placeholder="Ej: China, Estados Unidos..."
                     />
                   </div>
@@ -203,6 +244,7 @@ export default function QuoteForm() {
                     name="message"
                     rows={4}
                     className={`${INPUT_CLASS} resize-none`}
+                    style={INPUT_STYLE}
                     placeholder="Contanos más detalles: volumen estimado, frecuencia, urgencia..."
                   />
                 </div>
@@ -211,7 +253,7 @@ export default function QuoteForm() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="group w-full bg-accent hover:bg-accent-light disabled:opacity-60 disabled:cursor-not-allowed text-white font-heading text-sm font-semibold uppercase tracking-wider py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2.5 shadow-lg shadow-accent/20"
+                  className="glass-btn-primary group w-full disabled:opacity-60 disabled:cursor-not-allowed font-heading text-sm font-semibold uppercase tracking-wider py-4 rounded-xl flex items-center justify-center gap-2.5"
                 >
                   {status === "loading" ? (
                     <>
@@ -242,7 +284,7 @@ export default function QuoteForm() {
                 )}
 
                 {/* Subtext */}
-                <p className="text-center font-heading text-[11px] text-[#555] tracking-wider pt-1">
+                <p className="text-center font-heading text-[11px] text-body/40 tracking-wider pt-1">
                   Sin compromiso · Respuesta en menos de 24hs · 100% confidencial
                 </p>
               </motion.form>

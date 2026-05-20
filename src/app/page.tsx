@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
@@ -9,10 +8,6 @@ import CaseStudies from "@/components/CaseStudies";
 import QuoteForm from "@/components/QuoteForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-
-const ChatWidget = dynamic(() => import("@/components/ChatWidget"), {
-  ssr: false,
-});
 
 export default function Home() {
   return (
@@ -35,7 +30,6 @@ export default function Home() {
         <QuoteForm />
       </main>
       <Footer />
-      <ChatWidget />
       <WhatsAppButton />
     </>
   );
