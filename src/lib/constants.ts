@@ -7,9 +7,9 @@
 // so the UX never breaks.
 export const CONSULTATION = {
   calCom: {
-    // e.g. "alltrade-comex" — leave empty to fall back to WhatsApp.
-    handle: "",
-    eventSlug: "15min",
+    // Set to "" to fall back to WhatsApp.
+    handle: "agustin-pongolini-7ukymd",
+    eventSlug: "primera-importacion",
   },
   whatsappFallback:
     "https://wa.me/5493492630909?text=" +
