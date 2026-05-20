@@ -104,10 +104,10 @@ export default function Hero() {
             />
           </a>
           <a
-            href="#servicios"
+            href="#llamada"
             onClick={(e) => {
               e.preventDefault();
-              document.querySelector("#servicios")?.scrollIntoView({ behavior: "smooth" });
+              document.querySelector("#llamada")?.scrollIntoView({ behavior: "smooth" });
             }}
             className="glass-btn-secondary group font-heading text-sm font-semibold uppercase tracking-wider px-8 py-4 rounded-xl flex items-center gap-2.5"
           >

@@ -5,6 +5,7 @@ import Services from "@/components/Services";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import CaseStudies from "@/components/CaseStudies";
+import Consultation from "@/components/Consultation";
 import QuoteForm from "@/components/QuoteForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -27,6 +28,7 @@ export default function Home() {
         <Process />
         <About />
         <CaseStudies />
+        <Consultation />
         <QuoteForm />
       </main>
       <Footer />
