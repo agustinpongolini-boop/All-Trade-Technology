@@ -1,3 +1,20 @@
+// Booking / consultation. Replace CONSULTATION.calendarUrl with your real
+// Cal.com or Calendly URL when configured. Until then it falls back to a
+// WhatsApp deep link with a tailored message — same UX of "talk to a human".
+export const CONSULTATION = {
+  // TODO: replace with https://cal.com/<handle>/15min or Calendly equivalent.
+  calendarUrl:
+    "https://wa.me/5493492630909?text=" +
+    encodeURIComponent(
+      "Hola, quiero agendar 15 minutos para hablar de una importación. Es mi primera vez."
+    ),
+  whatsappFallback:
+    "https://wa.me/5493492630909?text=" +
+    encodeURIComponent(
+      "Hola, quiero hablar 15 minutos por WhatsApp sobre una importación."
+    ),
+} as const;
+
 export const COMPANY = {
   name: "All Trade Technology",
   tagline: "Domina tu carga. Protege tu capital.",
