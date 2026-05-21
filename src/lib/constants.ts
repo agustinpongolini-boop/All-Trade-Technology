@@ -34,6 +34,8 @@ export const COMPANY = {
   phone: "+54 9 3492 630909",
   whatsapp: "5493492630909",
   hours: "Lunes a Viernes 7:30 a 20:00",
+  instagramHandle: "alltradetechnology",
+  instagramUrl: "https://www.instagram.com/alltradetechnology/",
 } as const;
 
 export const STATS = [
