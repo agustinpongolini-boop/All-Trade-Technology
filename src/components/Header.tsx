@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, COMPANY } from "@/lib/constants";
+import InstagramIcon from "@/components/icons/InstagramIcon";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -102,14 +103,25 @@ export default function Header() {
             )}
           </nav>
 
-          {/* Desktop CTA */}
-          <a
-            href="#cotizar"
-            onClick={(e) => scrollTo(e, "#cotizar")}
-            className="glass-btn-primary hidden lg:inline-flex font-heading text-[11px] font-semibold uppercase tracking-[0.15em] px-5 py-2 rounded-full items-center"
-          >
-            Cotizar
-          </a>
+          {/* Desktop CTA cluster */}
+          <div className="hidden lg:flex items-center gap-2">
+            <a
+              href={COMPANY.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram @alltradetechnology"
+              className="w-9 h-9 flex items-center justify-center text-body/70 hover:text-accent-light rounded-full hover:bg-white/[0.06] transition-all duration-200"
+            >
+              <InstagramIcon size={16} />
+            </a>
+            <a
+              href="#cotizar"
+              onClick={(e) => scrollTo(e, "#cotizar")}
+              className="glass-btn-primary inline-flex font-heading text-[11px] font-semibold uppercase tracking-[0.15em] px-5 py-2 rounded-full items-center"
+            >
+              Cotizar
+            </a>
+          </div>
 
           {/* Mobile toggle */}
           <button
@@ -182,11 +194,23 @@ export default function Header() {
                 )
               )}
               <motion.a
+                href={COMPANY.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.25, delay: NAV_LINKS.length * 0.04 }}
+                className="mt-2 font-heading text-sm font-medium uppercase tracking-[0.15em] text-body/80 hover:text-accent-light py-3 px-4 rounded-xl hover:bg-white/[0.06] transition-all flex items-center gap-2.5"
+              >
+                <InstagramIcon size={16} />
+                Instagram
+              </motion.a>
+              <motion.a
                 href="#cotizar"
                 onClick={(e) => scrollTo(e, "#cotizar")}
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.25, delay: NAV_LINKS.length * 0.04 }}
+                transition={{ duration: 0.25, delay: (NAV_LINKS.length + 1) * 0.04 }}
                 className="glass-btn-primary mt-3 text-center font-heading text-sm font-semibold uppercase tracking-[0.15em] px-6 py-3.5 rounded-xl"
               >
                 Cotizar operación

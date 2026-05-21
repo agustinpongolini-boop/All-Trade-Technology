@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { COMPANY, SERVICES } from "@/lib/constants";
+import InstagramIcon from "@/components/icons/InstagramIcon";
 
 export default function Footer() {
   return (
@@ -113,6 +114,17 @@ export default function Footer() {
                   className="font-heading text-[13px] text-body/65 hover:text-accent-light transition-colors duration-200"
                 >
                   {COMPANY.phone}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <InstagramIcon size={14} className="text-accent/70 shrink-0" />
+                <a
+                  href={COMPANY.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-heading text-[13px] text-body/65 hover:text-accent-light transition-colors duration-200"
+                >
+                  @{COMPANY.instagramHandle}
                 </a>
               </li>
             </ul>
